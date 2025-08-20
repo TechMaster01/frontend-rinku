@@ -18,6 +18,7 @@ import {
   Person as PersonIcon,
   CalendarMonth as CalendarIcon,
   AttachMoney as MoneyIcon,
+  Receipt as ReceiptIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -30,7 +31,8 @@ const menuItems = [
   { name: 'Inicio', icon: <HomeIcon />, path: '/' },
   { name: 'Empleados', icon: <PersonIcon />, path: '/empleados' },
   { name: 'Asistencias', icon: <CalendarIcon />, path: '/asistencias' },
-  { name: 'Nómina', icon: <MoneyIcon />, path: '/nomina' },
+  { name: 'Nómina', icon: <ReceiptIcon />, path: '/nomina' },
+  { name: 'Parámetros de Nómina', icon: <MoneyIcon />, path: '/parametros-nomina' }
 ];
 
 const Sidebar = () => {
@@ -114,7 +116,7 @@ const Sidebar = () => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Mejor rendimiento en móvil
+            keepMounted: true, // Mejora el rendimiento en móvil
           }}
           sx={{
             '& .MuiDrawer-paper': { 

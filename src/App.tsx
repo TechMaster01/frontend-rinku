@@ -4,9 +4,9 @@ import HomeScreen from './screens/home'
 import EmpleadoScreen from './screens/Empleados'
 import AsistenciaScreen from './screens/Asistencias'
 import NominaScreen from './screens/Nomina'
+import ParametrosNominaScreen from './screens/ParametrosNomina'
 import Sidebar from './components/Sidebar/sidebar'
 
-// Tema oscuro para coincidir con tu CSS
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -30,6 +30,10 @@ function App() {
     {
       path: "/nomina",
       element: <NominaScreen />,
+    },
+    {
+      path: "/parametros-nomina",
+      element: <ParametrosNominaScreen />,
     },
     {
       path: "*",
