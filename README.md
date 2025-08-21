@@ -48,8 +48,10 @@ http://localhost:5173
 🛠️ Scripts disponibles
 
 ```bash
-npm run dev – Inicia el servidor de desarrollo
+npm run dev
 ```
+
+– Inicia el servidor de desarrollo
 
 ---
 
