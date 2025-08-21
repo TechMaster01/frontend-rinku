@@ -19,14 +19,17 @@ cd frontend-rinku
 ```
 
 Instala las dependencias:
-
+```bash
 npm install
+```
 
 ⚙️ Variables de entorno
 
 Crea el archivo .env.local basado en la plantilla incluida:
 
+```bash
 cp .env.local.template .env.local
+```
 
 Asegúrate de configurar las variables necesarias dentro de este archivo.
 
@@ -34,7 +37,9 @@ Asegúrate de configurar las variables necesarias dentro de este archivo.
 
 Ejecuta el siguiente comando:
 
+```bash
 npm run dev
+```
 
 Luego abre en tu navegador:
 
@@ -42,8 +47,9 @@ http://localhost:5173
 
 🛠️ Scripts disponibles
 
+```bash
 npm run dev – Inicia el servidor de desarrollo
-
+```
 
 ---
 
