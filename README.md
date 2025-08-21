@@ -16,6 +16,7 @@ Clona el repositorio:
 ```bash
 git clone https://github.com/TechMaster01/frontend-rinku.git
 cd frontend-rinku
+```
 
 Instala las dependencias:
 
