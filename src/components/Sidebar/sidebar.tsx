@@ -30,7 +30,7 @@ const drawerWidth = 240;
 const menuItems = [
   { name: 'Inicio', icon: <HomeIcon />, path: '/' },
   { name: 'Empleados', icon: <PersonIcon />, path: '/empleados' },
-  { name: 'Asistencias', icon: <CalendarIcon />, path: '/asistencias' },
+  { name: 'Asistencias y entregas', icon: <CalendarIcon />, path: '/asistencias' },
   { name: 'Nómina', icon: <ReceiptIcon />, path: '/nomina' },
   { name: 'Parámetros de Nómina', icon: <MoneyIcon />, path: '/parametros-nomina' }
 ];
