@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import type { IAsistencia } from '../../services/servicioAsistencias';
+import type { IEmpleado } from '../../services/servicioEmpleados';
+import servicioEmpleados from '../../services/servicioEmpleados';
 
 interface AsistenciasListProps {
   asistencias: IAsistencia[];
@@ -31,6 +33,25 @@ const AsistenciasList = ({ asistencias, cargando, onEliminar, onEditar }: Asiste
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [empleados, setEmpleados] = useState<IEmpleado[]>([]);
+  const [cargandoEmpleados, setCargandoEmpleados] = useState(false);
+
+  // Cargar empleados al montar el componente
+  useEffect(() => {
+    const cargarEmpleados = async () => {
+      try {
+        setCargandoEmpleados(true);
+        const empleadosData = await servicioEmpleados.obtenerEmpleados();
+        setEmpleados(empleadosData);
+      } catch (error) {
+        console.error('Error cargando empleados:', error);
+      } finally {
+        setCargandoEmpleados(false);
+      }
+    };
+    
+    cargarEmpleados();
+  }, []);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -73,6 +94,15 @@ const AsistenciasList = ({ asistencias, cargando, onEliminar, onEditar }: Asiste
     });
   };
 
+  // Función para obtener el nombre del empleado
+  const getNombreEmpleado = (empleadoId: number) => {
+    const empleado = empleados.find(emp => emp.id === empleadoId);
+    if (empleado) {
+      return `${empleado.nombres} ${empleado.apellido_paterno}`;
+    }
+    return `ID: ${empleadoId}`;
+  };
+
   const getCubrioTurnoChip = (cubrio: boolean, turno?: string | null) => {
     if (!cubrio) {
       return <Chip size="small" label="No" color="default" />;
@@ -110,7 +140,7 @@ const AsistenciasList = ({ asistencias, cargando, onEliminar, onEditar }: Asiste
         <Table aria-label="tabla de asistencias">
           <TableHead>
             <TableRow>
-              <TableCell>ID Empleado</TableCell>
+              <TableCell>Empleado</TableCell>
               <TableCell>Fecha</TableCell>
               {!isMobile && <TableCell align="center">Cubrió Turno</TableCell>}
               <TableCell align="right">Acciones</TableCell>
@@ -120,7 +150,15 @@ const AsistenciasList = ({ asistencias, cargando, onEliminar, onEditar }: Asiste
             {currentAsistencias.length > 0 ? (
               currentAsistencias.map((asistencia) => (
                 <TableRow key={asistencia.id} hover>
-                  <TableCell>{asistencia.empleado_id}</TableCell>
+                  <TableCell>
+                    {cargandoEmpleados ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <Typography variant="body2">
+                        {getNombreEmpleado(asistencia.empleado_id)}
+                      </Typography>
+                    )}
+                  </TableCell>
                   <TableCell>{formatDate(asistencia.fecha)}</TableCell>
                   {!isMobile && (
                     <TableCell align="center">

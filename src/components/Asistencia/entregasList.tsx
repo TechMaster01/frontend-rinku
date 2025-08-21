@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import type { IEntrega } from '../../services/servicioEntregas';
+import type { IEmpleado } from '../../services/servicioEmpleados';
+import servicioEmpleados from '../../services/servicioEmpleados';
 
 interface EntregasListProps {
   entregas: IEntrega[];
@@ -30,6 +32,25 @@ const EntregasList = ({ entregas, cargando, onEliminar, onEditar }: EntregasList
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [empleados, setEmpleados] = useState<IEmpleado[]>([]);
+  const [cargandoEmpleados, setCargandoEmpleados] = useState(false);
+
+  // Cargar empleados al montar el componente
+  useEffect(() => {
+    const cargarEmpleados = async () => {
+      try {
+        setCargandoEmpleados(true);
+        const empleadosData = await servicioEmpleados.obtenerEmpleados();
+        setEmpleados(empleadosData);
+      } catch (error) {
+        console.error('Error cargando empleados:', error);
+      } finally {
+        setCargandoEmpleados(false);
+      }
+    };
+    
+    cargarEmpleados();
+  }, []);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -72,6 +93,15 @@ const EntregasList = ({ entregas, cargando, onEliminar, onEditar }: EntregasList
     });
   };
 
+  // Función para obtener el nombre del empleado
+  const getNombreEmpleado = (empleadoId: number) => {
+    const empleado = empleados.find(emp => emp.id === empleadoId);
+    if (empleado) {
+      return `${empleado.nombres} ${empleado.apellido_paterno}`;
+    }
+    return `ID: ${empleadoId}`;
+  };
+
   if (cargando && entregas.length === 0) {
     return (
       <Paper sx={{ p: { xs: 2, md: 3 }, mb: 4, textAlign: 'center' }}>
@@ -95,7 +125,7 @@ const EntregasList = ({ entregas, cargando, onEliminar, onEditar }: EntregasList
         <Table aria-label="tabla de entregas">
           <TableHead>
             <TableRow>
-              <TableCell>ID Empleado</TableCell>
+              <TableCell>Empleado</TableCell>
               <TableCell>Fecha</TableCell>
               {!isMobile && <TableCell align="center">Cantidad</TableCell>}
               <TableCell align="right">Acciones</TableCell>
@@ -105,7 +135,15 @@ const EntregasList = ({ entregas, cargando, onEliminar, onEditar }: EntregasList
             {currentEntregas.length > 0 ? (
               currentEntregas.map((entrega) => (
                 <TableRow key={entrega.id} hover>
-                  <TableCell>{entrega.empleado_id}</TableCell>
+                  <TableCell>
+                    {cargandoEmpleados ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <Typography variant="body2">
+                        {getNombreEmpleado(entrega.empleado_id)}
+                      </Typography>
+                    )}
+                  </TableCell>
                   <TableCell>{formatDate(entrega.fecha)}</TableCell>
                   {!isMobile && (
                     <TableCell align="center">
